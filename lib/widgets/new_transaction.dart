@@ -1,23 +1,39 @@
 // ignore_for_file: prefer_const_constructors
 
-// This Widget file Reutrns Card Widget that have 2 TextField and 1 Flat button for user to input new transaction
+// ! Reutrns Card Widget that have 2 TextField and 1 Flat button for user to add new transaction
 
 import 'package:flutter/material.dart';
 
-class NewTransaction extends StatelessWidget {
+class NewTransaction extends StatefulWidget {
+  /// * This file has 2 class to be precise this is Widget class and the below one is called state class
+  /// * To get pass information from widget class to state class FLutter establishes  a connection and that can be accesed using widget. in state class
   final Function addTxn;
+
+  NewTransaction(this.addTxn);
+
+  @override
+  State<NewTransaction> createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
 
-  NewTransaction(this.addTxn);
   void submitData() {
-    if (amountController.text.isEmpty || titleController.text.isEmpty) {
-      return;  // after hitting return the code below will not be executed
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+
+    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+      return;   // ! If code hits return the code below will not be executed
     }
-    addTxn(
-        titleController.text,
-        double.parse(amountController
-            .text)); // Because _addTx expects amount to be a double
+// ? Connection was established by flutter and now we can use the information from the widget class in our state class
+    widget.addTxn(
+      enteredTitle,
+      enteredAmount,
+    ); // Because _addTx expects amount to be a double
+
+    // ? built in flutter possibilities to pop the topmost screen [the transaction section]. we will look deep in further section
+    Navigator.of(context).pop();
   }
 
   @override
@@ -30,8 +46,11 @@ class NewTransaction extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextField(
-              controller: titleController,
-              onSubmitted: (_) =>
+              // onChanged: (val) {
+              //   titleInput = val;
+              // },
+              controller: titleController,   // * Controller reads every user Key Strokes in UI
+              onSubmitted: (_) =>     // * On submitted is triggered when user hits enter in the  UI keyboard
                   submitData(), // So that when user press the enter on the keyboard the data gets submutted.
               decoration: InputDecoration(
                   labelText: 'Title',
@@ -41,8 +60,8 @@ class NewTransaction extends StatelessWidget {
               controller: amountController,
               onSubmitted: (_) =>
                   submitData(), // Because onSubmitted gives us the String return, indeed i dont need it so we are showing that we are accepting the String but are not using it by sign _
-              keyboardType: TextInputType.numberWithOptions(
-                  decimal: true), // IOS supports this type of approach
+              keyboardType: TextInputType.numberWithOptions(  
+                  decimal: true), // * IOS supports this type of approach
               decoration: InputDecoration(
                   labelText: 'Amount',
                   labelStyle: TextStyle(color: Colors.deepOrange)),
