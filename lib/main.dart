@@ -1,16 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-// ?                           main
-// ?                            |returning column
-// ?                            | holding
-// ?          --------------------------------
-// ?        |                                |
-// ?   NewTransaction()              TransactionList(_userTransactions)
-// ?          |                                   |
-// ?        Card(                            Card(
-// ?          TextField                        Row[
-// ?          TextField                             Displaying List(Title nd amount)
-// ?          FlatButton                           ]
-// ?        )                                )
+
 import 'package:flutter/material.dart';
 
 import './widgets/transaction_list.dart';
@@ -55,13 +44,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-        id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
-    Transaction(
-        id: 't2',
-        title: 'Weekly Groceries',
-        amount: 16.53,
-        date: DateTime.now()),
+    // Transaction(
+    //     id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
+    // Transaction(
+    //     id: 't2',
+    //     title: 'Weekly Groceries',
+    //     amount: 16.53,
+    //     date: DateTime.now()),
   ];
 
   /*
