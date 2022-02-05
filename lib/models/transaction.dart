@@ -1,7 +1,4 @@
 // Holds the Transaction model which is implemented throughout the project
-
-import 'package:flutter/foundation.dart';
-
 class Transaction {
   String id;
   String title;
