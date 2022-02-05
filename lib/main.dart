@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 import './widgets/new_transaction.dart';
+import './widgets/child.dart';
 
 void main() => runApp(MyApp());
 
@@ -53,6 +54,24 @@ class _MyHomePageState extends State<MyHomePage> {
     //     date: DateTime.now()),
   ];
 
+  List<Transaction> get _recentTransactions {
+    // for (var i = 0; i < _userTransactions.length; i++) {
+    //   if (_userTransactions[i]
+    //       .date
+    //       .isAfter(DateTime.now().subtract(Duration(days: 7)))) {
+    //     return _userTransactions;
+    //   }
+    // }
+
+    return _userTransactions.where((tx) { // if func return true the data will be stored in the newly returned list
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList(); 
+  }
+
   /*
    * @param txTitle
    */
@@ -97,18 +116,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: SingleChildScrollView(
           // To make list scrollable
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Container(
-              width: double.infinity,
-              child: Card(
-                child: Text('Chart 1'),
-                color: Colors.blue,
-                elevation: 5,
-              ),
-            ),
-            TransactionList(_userTransactions)
-          ]),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Chart(_recentTransactions),
+                TransactionList(_userTransactions)
+              ]),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
