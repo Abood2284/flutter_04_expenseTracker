@@ -1,4 +1,4 @@
-// Holds the Transaction model which is implemented throughout the project
+/// * Holds the Transaction model which is implemented throughout the project
 class Transaction {
   String id;
   String title;
