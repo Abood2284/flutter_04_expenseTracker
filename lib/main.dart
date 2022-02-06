@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
         fontFamily: 'QuickSand',
-        // * refer to this Meta-Data using [style: Theme.of(context).textTheme.headline6]
+
+        /// * Created Own textTheme to be used for headlines {Theme.of(context).textTheme.headline6}
         textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
               fontFamily: 'OpenSans',
@@ -26,7 +27,6 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
             )),
         appBarTheme: AppBarTheme(
-            // * Will set all your screens AppBar title with this meta-Data
             titleTextStyle: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 20,
@@ -45,38 +45,38 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    // Transaction(
-    //     id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
-    // Transaction(
-    //     id: 't2',
-    //     title: 'Weekly Groceries',
-    //     amount: 16.53,
-    //     date: DateTime.now()),
+    /* Transaction(
+        id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
+    Transaction(
+        id: 't2',
+        title: 'Weekly Groceries',
+        amount: 16.53,
+        date: DateTime.now()),
+        */
   ];
 
   List<Transaction> get _recentTransactions {
-    // for (var i = 0; i < _userTransactions.length; i++) {
-    //   if (_userTransactions[i]
-    //       .date
-    //       .isAfter(DateTime.now().subtract(Duration(days: 7)))) {
-    //     return _userTransactions;
-    //   }
-    // }
+    /* for (var i = 0; i < _userTransactions.length; i++) {
+      if (_userTransactions[i]
+          .date
+          .isAfter(DateTime.now().subtract(Duration(days: 7)))) {
+        return _userTransactions;
+      }
+    }
+    */
 
-    return _userTransactions.where((tx) { // if func return true the data will be stored in the newly returned list
+    /// * if returns true data will be stored in the newly returned list
+    return _userTransactions.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
           Duration(days: 7),
         ),
       );
-    }).toList(); 
+    }).toList();
   }
 
-  /*
-   * @param txTitle
-   */
+  /// * Add new objects in TransactionList + Updates the State
   void _addTx(String txTitle, double txAmount) {
-    // This function creates a new object from Transaction model and updates the state using setState.
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
@@ -88,11 +88,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  /// * Generates a pop up Modal sheet Using current context
   void _addNewTransactionModalSheet(BuildContext modalContext) {
+  /// * Pop ups the sheet with the help of builder
     showModalBottomSheet(
         context: modalContext,
+        /// * Returned value is never needed. So marked _
         builder: (_) {
-          // it will return ctx which we dont need so we use _ to show other dev we dont need the returned ctx
           return GestureDetector(
               onTap: () {},
               child: NewTransaction(_addTx),
@@ -109,13 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
                 onPressed: () => _addNewTransactionModalSheet(context),
                 icon: Icon(
-                  Icons.add, // Choosing the right button
+                  Icons.add,
                   color: Colors.amberAccent,
                 ))
           ],
         ),
         body: SingleChildScrollView(
-          // To make list scrollable
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
