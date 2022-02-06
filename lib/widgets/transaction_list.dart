@@ -1,5 +1,6 @@
-// ! This widget file holds Card which is responsible for taking Transaction List through it's constructor.
-// ! And display it on the screen using dynamic .map() metho
+/// * Displays the Transaction entered by the user through the ModalSheet
+/// 
+/// * Uses if-else condition in the body
 
 // ignore_for_file: prefer_const_constructors
 
@@ -15,6 +16,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+// TODO : Wrap container in FractionallySixedBox with height factor of 30%
     return Container(
       height: 300,
       child: transactions.isEmpty
@@ -26,7 +28,7 @@ class TransactionList extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 20,
-                ), // * TO get space between 2 widgets
+                ),
                 Container(
                     height: 200,
                     child: Image.asset('assets/images/waiting.png'))
@@ -35,7 +37,7 @@ class TransactionList extends StatelessWidget {
           : ListView.builder(
               // ! We defined it's parent(Container) height 300 becoz, ListView default takes infinite space resulting in no widgets rendered
               // * Gives the context[we dont need] also give the index of the current element at pos
-              itemBuilder: (context, index) {
+              itemBuilder: (_context, index) {
                 return Card(
                   child: Row(
                     children: [
@@ -48,7 +50,7 @@ class TransactionList extends StatelessWidget {
                                   width: 2)),
                           padding: EdgeInsets.all(10),
                           child: Text(
-                              '\$ ${transactions[index].amount.toStringAsFixed(2)}', // * only upto 2 decimal places are showed
+                              '\$ ${transactions[index].amount.toStringAsFixed(2)}', // * upto 2 decimal places are showed
                               style: Theme.of(context).textTheme.headline6)),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
