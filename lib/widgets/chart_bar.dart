@@ -1,4 +1,4 @@
-import 'package:/flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
   final String label;
@@ -31,11 +31,12 @@ class ChartBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              FractionallySizedBox( // * Widget that sizes its child to a fraction of the total available space {Takes Value between 0 & 1}
+              FractionallySizedBox(
+                // * Widget that sizes its child to a fraction of the total available space {Takes Value between 0 & 1}
                 heightFactor: spendingPercentageOfTotal,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.amber,
                       borderRadius: BorderRadius.circular(10)),
                 ),
               )
