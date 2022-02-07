@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 import './widgets/new_transaction.dart';
-import './widgets/child.dart';
+import './widgets/chart.dart';
 
 void main() => runApp(MyApp());
 
