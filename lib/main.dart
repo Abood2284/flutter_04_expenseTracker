@@ -56,15 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   List<Transaction> get _recentTransactions {
-    /* for (var i = 0; i < _userTransactions.length; i++) {
-      if (_userTransactions[i]
-          .date
-          .isAfter(DateTime.now().subtract(Duration(days: 7)))) {
-        return _userTransactions;
-      }
-    }
-    */
-
     /// * if returns true data will be stored in the newly returned list
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
