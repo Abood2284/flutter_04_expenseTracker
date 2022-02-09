@@ -20,7 +20,7 @@ class Chart extends StatelessWidget {
 
       final weekDay = DateTime.now().subtract(Duration(days: index));
       double totalSum =
-          0.0; // set as 0 because Dart dont allow Assigning Values to Nullable
+          0.0; // setting as 0.0 because Dart dont allow Assigning Values to Nullable
       for (var i = 0; i < recentTransactions.length; i++) {
         if (recentTransactions[i].date.day == weekDay.day &&
             recentTransactions[i].date.month == weekDay.month &&
@@ -59,8 +59,11 @@ class Chart extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: groupedTransactionValues.map((data) {
-          return Flexible(
-            fit: FlexFit.tight,
+      // * Expanded sets by default fit to FlexFit.tight so you dont need to mention it explicitly
+      // * However you need to mention Fit value if you use Flexible instead of Expanded
+          return Expanded(
+      // * FlexFit.tight forces the child to take the as many as space available without squeezing other widgets
+            // fit: FlexFit.tight,
             child: ChartBar(
                 label: data.weekDayName,
                 spendingAmount: data.amount,
