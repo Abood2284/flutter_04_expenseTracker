@@ -1,5 +1,5 @@
 /// * Displays the Transaction entered by the user through the ModalSheet
-/// 
+///
 /// * Uses if-else condition in the body
 
 // ignore_for_file: prefer_const_constructors
@@ -39,31 +39,18 @@ class TransactionList extends StatelessWidget {
               // * Gives the context[we dont need] also give the index of the current element at pos
               itemBuilder: (_context, index) {
                 return Card(
-                  child: Row(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 15),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2)),
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                              '\$ ${transactions[index].amount.toStringAsFixed(2)}', // * upto 2 decimal places are showed
-                              style: Theme.of(context).textTheme.headline6)),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(transactions[index].title,
-                              style: Theme.of(context).textTheme.headline6),
-                          Text(
-                            DateFormat.yMMMd().format(transactions[index].date),
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        ],
-                      )
-                    ],
+                  margin: EdgeInsets.symmetric(vertical: 7, horizontal: 4),
+                  elevation: 6,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                        child: Padding(padding: EdgeInsets.all(5), child: FittedBox(child: Text('\$${transactions[index].amount}'))),
+                        radius: 30),
+                    title: Text(
+                      transactions[index].title,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    subtitle:
+                        Text(DateFormat.yMMMd().format(transactions[index].date)),
                   ),
                 );
               },
