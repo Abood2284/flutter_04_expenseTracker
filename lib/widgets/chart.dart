@@ -31,7 +31,7 @@ class Chart extends StatelessWidget {
       return ChartDetails(
           weekDayName: DateFormat.E().format(weekDay).substring(0, 1),
           amount: totalSum);
-    });
+    }).reversed.toList(); /// * So our week days have the todays day at the right {According to our algorithm today day should be on left, so didnt want that so we used a revered funtion to get it} also reversed returns and iterabel so we need to do .toList() to get the iterable
   }
 
   double get totalSpendingForPercentage {

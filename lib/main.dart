@@ -20,11 +20,13 @@ class MyApp extends StatelessWidget {
 
         /// * Created Own textTheme to be used for headlines {Theme.of(context).textTheme.headline6}
         textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
-              fontFamily: 'OpenSans',
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            )),
+              headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              button: TextStyle(color: Colors.white),
+            ),
         appBarTheme: AppBarTheme(
             titleTextStyle: TextStyle(
                 fontFamily: 'OpenSans',
@@ -66,11 +68,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// * Add new objects in TransactionList + Updates the State
-  void _addTx(String txTitle, double txAmount) {
+  void _addTx(String txTitle, double txAmount, DateTime selectedDate) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date: selectedDate,
         id: DateTime.now().toString());
 
     setState(() {
@@ -80,9 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// * Generates a pop up Modal sheet Using current context
   void _addNewTransactionModalSheet(BuildContext modalContext) {
-  /// * Pop ups the sheet with the help of builder
+    /// * Pop ups the sheet with the help of builder
     showModalBottomSheet(
         context: modalContext,
+
         /// * Returned value is never needed. So marked _
         builder: (_) {
           return GestureDetector(
@@ -90,6 +93,14 @@ class _MyHomePageState extends State<MyHomePage> {
               child: NewTransaction(_addTx),
               behavior: HitTestBehavior.opaque);
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      /// * removeWhere iterates over every element in List
+      /// * and removes the element which matches the test condition
+      _userTransactions.removeWhere((tx) => tx.id == id);
+    });
   }
 
   @override
@@ -111,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Chart(_recentTransactions),
-                TransactionList(_userTransactions)
+                TransactionList(_userTransactions, _deleteTransaction)
               ]),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
