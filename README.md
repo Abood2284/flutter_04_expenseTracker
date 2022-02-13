@@ -34,3 +34,5 @@ With that said it also has docs commenting explaining the hard and important con
 
 # Images of the app
 ![alt](https://github.com/Abood2284/Images/blob/main/flutter_04_expenseTracker/1.png)
+![alt](https://github.com/Abood2284/Images/blob/main/flutter_04_expenseTracker/2.png)
+![alt](https://github.com/Abood2284/Images/blob/main/flutter_04_expenseTracker/3.png)
