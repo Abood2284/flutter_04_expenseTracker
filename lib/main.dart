@@ -1,12 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 import './widgets/new_transaction.dart';
 import './widgets/chart.dart';
 
-void main() => runApp(MyApp());
+void main() {
+/// * Locking the device orientation
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations(
+  //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -105,25 +112,42 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text('Personel Expense'),
+      actions: [
+        IconButton(
+            onPressed: () => _addNewTransactionModalSheet(context),
+            icon: Icon(
+              Icons.add,
+              color: Colors.amberAccent,
+            ))
+      ],
+    );
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Personel Expense'),
-          actions: [
-            IconButton(
-                onPressed: () => _addNewTransactionModalSheet(context),
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.amberAccent,
-                ))
-          ],
-        ),
+        appBar: appBar,
         body: SingleChildScrollView(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Chart(_recentTransactions),
-                TransactionList(_userTransactions, _deleteTransaction)
-              ]),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Container(
+
+                /// * MediaQuery is a class that allows styling widgets according to the devivce user have
+                ///
+                /// * is used here to get the full height of the user's-device thought
+                /// * MediaQuery takes appBAr height and the top padding height in calculation
+                /// * we dont want to split height with appBAr right? so substracting these 2 values
+                /// * gets you the full height of the user-device screen. which now can render you widgets
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.3,
+                child: Chart(_recentTransactions)),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.7,
+                child: TransactionList(_userTransactions, _deleteTransaction))
+          ]),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(

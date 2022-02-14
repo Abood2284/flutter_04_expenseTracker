@@ -1,6 +1,7 @@
 /// * Displays the Transaction entered by the user through the ModalSheet
 ///
 /// * Uses if-else condition in the body
+/// * Used ListView.builder to create scrollable ListViews
 
 // ignore_for_file: prefer_const_constructors
 
@@ -17,10 +18,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-// TODO : Wrap container in FractionallySixedBox with height factor of 30%
-    return Container(
-      height: 300,
-      child: transactions.isEmpty
+    return transactions.isEmpty
           ? Column(
               children: [
                 Text(
@@ -36,7 +34,7 @@ class TransactionList extends StatelessWidget {
               ],
             )
           : ListView.builder(
-              // ! We defined it's parent(Container) height 300 becoz, ListView default takes infinite space resulting in no widgets rendered
+              // ! ListView default takes infinite space, Iniitalize height to parent carefully
               // * Gives the context[we dont need] also give the index of the current element at pos
               itemBuilder: (_context, index) {
                 return Card(
@@ -67,7 +65,6 @@ class TransactionList extends StatelessWidget {
                 );
               },
               itemCount: transactions.length,
-            ),
     );
   }
 }
