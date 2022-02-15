@@ -8,11 +8,11 @@ import './widgets/new_transaction.dart';
 import './widgets/chart.dart';
 
 void main() {
-/// * Locking the device orientation
+  /// * Locking the device orientation
   // WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setPreferredOrientations(
   //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  
+
   runApp(MyApp());
 }
 
@@ -75,6 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
+  /// * Sets the state of the switch
+  bool _isChanged = false;
+
   /// * Add new objects in TransactionList + Updates the State
   void _addTx(String txTitle, double txAmount, DateTime selectedDate) {
     final newTx = Transaction(
@@ -129,6 +132,16 @@ class _MyHomePageState extends State<MyHomePage> {
         body: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Row(
+              children: [
+                Text('Show chart'),
+                Switch(value: _isChanged, onChanged: (val) {
+                  setState(() {
+                    _isChanged = val;
+                  });
+                }),
+              ],
+            ),
             Container(
 
                 /// * MediaQuery is a class that allows styling widgets according to the devivce user have
