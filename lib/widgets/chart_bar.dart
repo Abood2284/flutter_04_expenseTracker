@@ -12,6 +12,11 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// * LayoutBuilder takes a mandatorty argument called the builder:
+    /// 
+    /// * which then also takes a function and return us the context, and the constraint(which we want here)
+    /// * now contraints are the height & widht metadata that layoutBuilder has from its parent 
+    /// * and now we can assign height dynamically based on the metaData
     return LayoutBuilder(builder: (ctx, constraints) {
       return Column(
         children: [
