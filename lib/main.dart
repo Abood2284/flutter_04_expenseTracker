@@ -127,39 +127,64 @@ class _MyHomePageState extends State<MyHomePage> {
             ))
       ],
     );
+
+    final isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+// To avoid Duplication of code,
+// ! This variable is refferd multiple times only in this file
+    final txList = Container(
+        height: (MediaQuery.of(context).size.height -
+                appBar.preferredSize.height -
+                MediaQuery.of(context).padding.top) *
+            0.7,
+        child: TransactionList(_userTransactions, _deleteTransaction));
+
     return Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Row(
-              children: [
-                Text('Show chart'),
-                Switch(value: _isChanged, onChanged: (val) {
-                  setState(() {
-                    _isChanged = val;
-                  });
-                }),
-              ],
-            ),
-            _isChanged ? Container(
-
-                /// * MediaQuery is a class that allows styling widgets according to the devivce user have
-                ///
-                /// * is used here to get the full height of the user's-device thought
-                /// * MediaQuery takes appBAr height and the top padding height in calculation
-                /// * we dont want to split height with appBAr right? so substracting these 2 values
-                /// * gets you the full height of the user-device screen. which now can render you widgets
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.3,
-                child: Chart(_recentTransactions)) : Container(
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.7,
-                child: TransactionList(_userTransactions, _deleteTransaction))
+                // * Show the switch only if the orientation is landscape, refer to variable bool isLandscape
+            if (isLandScape)
+              Row(
+                children: [
+                  Text('Show chart'),
+                  Switch(
+                      value: _isChanged,
+                      onChanged: (val) {
+                        setState(() {
+                          _isChanged = val;
+                        });
+                      }),
+                ],
+              ),
+              // * If orientation is Portrait i want to see botht chart & txList
+            if (!isLandScape)
+            // ! Below code is not duplicated -> changes [ 0.7 -> 0.3 ]
+              Container(
+                  height: (MediaQuery.of(context).size.height -
+                          appBar.preferredSize.height -
+                          MediaQuery.of(context).padding.top) *
+                      0.3,
+                  child: Chart(_recentTransactions)),
+            if (!isLandScape) txList,  // * reffering to the variable that holds the container
+            // * If orientation landscape show the turnary expression
+            if (isLandScape)
+              _isChanged
+                  ? Container(
+                      /// * MediaQuery is a class that allows styling widgets according to the devivce user have
+                      ///
+                      /// * is used here to get the full height of the user's-device thought
+                      /// * MediaQuery takes appBAr height and the top padding height in calculation
+                      /// * we dont want to split height with appBAr right? so substracting these 2 values
+                      /// * gets you the full height of the user-device screen. which now can render you widgets
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.7,
+                      child: Chart(_recentTransactions))
+                  : txList // * reffering to the variable that holds the container
           ]),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
