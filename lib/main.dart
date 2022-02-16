@@ -138,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 MediaQuery.of(context).padding.top) *
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
- 
+  
     return Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
