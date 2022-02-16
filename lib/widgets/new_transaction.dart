@@ -31,11 +31,7 @@ class _NewTransactionState extends State<NewTransaction> {
     }
 
     /// * To access variable of widget class in state class, use widget.variableName
-    widget.addTxn(
-      enteredTitle,
-      enteredAmount,
-      _choosenDate
-    );
+    widget.addTxn(enteredTitle, enteredAmount, _choosenDate);
 
     // ? built in flutter possibilities to pop the topmost screen [the Modalsheet transaction section]. we will look deep in further section
     Navigator.of(context).pop();
@@ -68,63 +64,73 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              /*
-               onChanged: (val) {
-                 titleInput = val;
-               }, 
-               */
-              /// * Reads every user Key Strokes in UI
-              controller: _titleController,
-              onSubmitted: (_) => _submitData(),
-              decoration: InputDecoration(
-                  labelText: 'Title',
-                  labelStyle: TextStyle(color: Colors.deepOrange)),
-            ),
-            TextField(
-              controller: _amountController,
-              onSubmitted: (_) => _submitData(),
-              keyboardType: TextInputType.numberWithOptions(
-                  decimal: true), // * IOS supports this type of approach
-              decoration: InputDecoration(
-                  labelText: 'Amount',
-                  labelStyle: TextStyle(color: Colors.deepOrange)),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: [
-                  Text(_choosenDate == null
-                      ? 'No Date Chosen!'
-                      : 'Picked Date: ${DateFormat.yMd().format(_choosenDate!)}'),
-                  SizedBox(
-                    width: 30,
-                  ),
-
-                  /// * That will take all the width available after giving our Text Widget the space it needs
-                  Expanded(
-                    child: TextButton(
-                      onPressed: _presentDatePickerOnScreen,
-                      child: Text('Choose Date'),
-                    ),
-                  )
-                ],
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          //* Now our keyboard becomes a burden while entering the data
+          
+          ///* You will know once you hover over viewInsets that it displays the parts of the UI 
+          ///* that is covered by the SYSTEM i.e: Keyboard
+          padding: EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                /*
+                 onChanged: (val) {
+                   titleInput = val;
+                 }, 
+                 */
+                /// * Reads every user Key Strokes in UI
+                controller: _titleController,
+                onSubmitted: (_) => _submitData(),
+                decoration: InputDecoration(
+                    labelText: 'Title',
+                    labelStyle: TextStyle(color: Colors.deepOrange)),
               ),
-            ),
-            RaisedButton(
-              onPressed: _submitData,
-              child: Text('Add Transaction'),
-              color: Theme.of(context).primaryColor,
-              textColor: Colors.white,
-            )
-          ],
+              TextField(
+                controller: _amountController,
+                onSubmitted: (_) => _submitData(),
+                keyboardType: TextInputType.numberWithOptions(
+                    decimal: true), // * IOS supports this type of approach
+                decoration: InputDecoration(
+                    labelText: 'Amount',
+                    labelStyle: TextStyle(color: Colors.deepOrange)),
+              ),
+              Container(
+                height: 70,
+                child: Row(
+                  children: [
+                    Text(_choosenDate == null
+                        ? 'No Date Chosen!'
+                        : 'Picked Date: ${DateFormat.yMd().format(_choosenDate!)}'),
+                    SizedBox(
+                      width: 30,
+                    ),
+
+                    /// * That will take all the width available after giving our Text Widget the space it needs
+                    Expanded(
+                      child: TextButton(
+                        onPressed: _presentDatePickerOnScreen,
+                        child: Text('Choose Date'),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              RaisedButton(
+                onPressed: _submitData,
+                child: Text('Add Transaction'),
+                color: Theme.of(context).primaryColor,
+                textColor: Colors.white,
+              )
+            ],
+          ),
         ),
       ),
     );

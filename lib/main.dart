@@ -96,7 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
     /// * Pop ups the sheet with the help of builder
     showModalBottomSheet(
         context: modalContext,
-
         /// * Returned value is never needed. So marked _
         builder: (_) {
           return GestureDetector(
