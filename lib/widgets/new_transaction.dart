@@ -68,8 +68,7 @@ class _NewTransactionState extends State<NewTransaction> {
       child: Card(
         elevation: 5,
         child: Container(
-          //* Now our keyboard becomes a burden while entering the data
-          
+          ///* Now our keyboard becomes a burden while entering the data
           ///* You will know once you hover over viewInsets that it displays the parts of the UI 
           ///* that is covered by the SYSTEM i.e: Keyboard
           padding: EdgeInsets.only(
