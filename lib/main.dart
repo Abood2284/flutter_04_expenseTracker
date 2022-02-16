@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
               ],
             ),
-            Container(
+            _isChanged ? Container(
 
                 /// * MediaQuery is a class that allows styling widgets according to the devivce user have
                 ///
@@ -154,8 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         appBar.preferredSize.height -
                         MediaQuery.of(context).padding.top) *
                     0.3,
-                child: Chart(_recentTransactions)),
-            Container(
+                child: Chart(_recentTransactions)) : Container(
                 height: (MediaQuery.of(context).size.height -
                         appBar.preferredSize.height -
                         MediaQuery.of(context).padding.top) *
