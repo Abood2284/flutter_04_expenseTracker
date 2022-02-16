@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ))
       ],
     );
-    
+  
     final isLandScape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
