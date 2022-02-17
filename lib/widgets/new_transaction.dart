@@ -27,7 +27,7 @@ class _NewTransactionState extends State<NewTransaction> {
     final enteredAmount = double.parse(_amountController.text);
 
     if (enteredTitle.isEmpty || enteredAmount <= 0 || _choosenDate == null) {
-      return; // ! Dont run below code if true
+      return; // !🛑 Dont run below code if true
     }
 
     /// * To access variable of widget class in state class, use widget.variableName
