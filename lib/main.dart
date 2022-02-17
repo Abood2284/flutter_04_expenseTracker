@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -130,8 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    final isLandScape =
-        mediaQuery.orientation == Orientation.landscape;
+    final isLandScape = mediaQuery.orientation == Orientation.landscape;
 
 // 😆To avoid Duplication of code,
 // !🛑 This variable is refferd multiple times only in this file
@@ -192,9 +193,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ]),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () => _addNewTransactionModalSheet(context),
-        ));
+        floatingActionButton: Platform.isIOS
+            ? Container()
+            : FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () => _addNewTransactionModalSheet(context),
+              ));
   }
 }
