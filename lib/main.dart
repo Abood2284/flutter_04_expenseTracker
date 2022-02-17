@@ -175,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
               _isChanged
                   ? Container(
 
-                      /// * MediaQuery is a class that allows styling widgets according to the devivce user have
+                      /// * 🟩 MediaQuery is a class that allows styling widgets according to the devivce user have
                       ///
                       /// * is used here to get the full height of the user's-device thought
                       /// * MediaQuery takes appBAr height and the top padding height in calculation
