@@ -96,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
     /// * Pop ups the sheet with the help of builder
     showModalBottomSheet(
         context: modalContext,
+
         /// * Returned value is never needed. So marked _
         builder: (_) {
           return GestureDetector(
@@ -126,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ))
       ],
     );
-  
+
     final isLandScape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
@@ -138,13 +139,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 MediaQuery.of(context).padding.top) *
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
-  
+
     return Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                // * Show the switch only if the orientation is landscape, refer to variable bool isLandscape
+            // * Show the switch only if the orientation is landscape, refer to variable bool isLandscape
             if (isLandScape)
               Row(
                 children: [
@@ -158,20 +159,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       }),
                 ],
               ),
-              // * If orientation is Portrait i want to see botht chart & txList
+            // * If orientation is Portrait i want to see botht chart & txList
             if (!isLandScape)
-            // ! Below code is not duplicated -> changes [ 0.7 -> 0.3 ]
+              // ! Below code is not duplicated -> changes [ 0.7 -> 0.3 ]
               Container(
                   height: (MediaQuery.of(context).size.height -
                           appBar.preferredSize.height -
                           MediaQuery.of(context).padding.top) *
                       0.3,
                   child: Chart(_recentTransactions)),
-            if (!isLandScape) txList,  // * reffering to the variable that holds the container
+            if (!isLandScape)
+              txList, // * reffering to the variable that holds the container
             // * If orientation landscape show the turnary expression
             if (isLandScape)
               _isChanged
                   ? Container(
+
                       /// * MediaQuery is a class that allows styling widgets according to the devivce user have
                       ///
                       /// * is used here to get the full height of the user's-device thought
