@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -120,17 +121,31 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // 🟦 TO avoid duplication of creation of MediaQuery object
     final mediaQuery = MediaQuery.of(context);
-    final appBar = AppBar(
-      title: Text('Personel Expense'),
-      actions: [
-        IconButton(
-            onPressed: () => _addNewTransactionModalSheet(context),
-            icon: Icon(
-              Icons.add,
-              color: Colors.amberAccent,
-            ))
-      ],
-    );
+    final appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text('Personel Expense'),
+            trailing: Row(
+              // * Will only take the size(width) as much his children needs
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () => _addNewTransactionModalSheet(context),
+                  child: Icon(CupertinoIcons.add),
+                ),
+              ],
+            ),
+          )
+        : AppBar(
+            title: Text('Personel Expense'),
+            actions: [
+              IconButton(
+                  onPressed: () => _addNewTransactionModalSheet(context),
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.amberAccent,
+                  ))
+            ],
+          );
 
     final isLandScape = mediaQuery.orientation == Orientation.landscape;
 
@@ -143,61 +158,68 @@ class _MyHomePageState extends State<MyHomePage> {
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
-    return Scaffold(
-        appBar: appBar,
-        body: SingleChildScrollView(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            // * Show the switch only if the orientation is landscape, refer to variable bool isLandscape
-            if (isLandScape)
-              Row(
-                children: [
-                  Text('Show chart'),
-                  Switch(
-                      value: _isChanged,
-                      onChanged: (val) {
-                        setState(() {
-                          _isChanged = val;
-                        });
-                      }),
-                ],
-              ),
-            // * If orientation is Portrait i want to see botht chart & txList
-            if (!isLandScape)
-              // !🛑 Below code is not duplicated -> changes [ 0.7 -> 0.3 ]
-              Container(
+// !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform
+    final bodyOfApp = SingleChildScrollView(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        // * Show the switch only if the orientation is landscape, refer to variable bool isLandscape
+        if (isLandScape)
+          Row(
+            children: [
+              Text('Show chart'),
+              Switch(
+                  value: _isChanged,
+                  onChanged: (val) {
+                    setState(() {
+                      _isChanged = val;
+                    });
+                  }),
+            ],
+          ),
+        // * If orientation is Portrait i want to see botht chart & txList
+        if (!isLandScape)
+          // !🛑 Below code is not duplicated -> changes [ 0.7 -> 0.3 ]
+          Container(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.3,
+              child: Chart(_recentTransactions)),
+        if (!isLandScape)
+          txList, // * reffering to the variable that holds the container
+        // * If orientation landscape show the turnary expression
+        if (isLandScape)
+          _isChanged
+              ? Container(
+
+                  /// * 🟩 MediaQuery is a class that allows styling widgets according to the devivce user have
+                  ///
+                  /// * is used here to get the full height of the user's-device thought
+                  /// * MediaQuery takes appBAr height and the top padding height in calculation
+                  /// * we dont want to split height with appBAr right? so substracting these 2 values
+                  /// * gets you the full height of the user-device screen. which now can render you widgets
                   height: (mediaQuery.size.height -
                           appBar.preferredSize.height -
                           mediaQuery.padding.top) *
-                      0.3,
-                  child: Chart(_recentTransactions)),
-            if (!isLandScape)
-              txList, // * reffering to the variable that holds the container
-            // * If orientation landscape show the turnary expression
-            if (isLandScape)
-              _isChanged
-                  ? Container(
+                      0.7,
+                  child: Chart(_recentTransactions))
+              : txList // * reffering to the variable that holds the container
+      ]),
+    );
 
-                      /// * 🟩 MediaQuery is a class that allows styling widgets according to the devivce user have
-                      ///
-                      /// * is used here to get the full height of the user's-device thought
-                      /// * MediaQuery takes appBAr height and the top padding height in calculation
-                      /// * we dont want to split height with appBAr right? so substracting these 2 values
-                      /// * gets you the full height of the user-device screen. which now can render you widgets
-                      height: (mediaQuery.size.height -
-                              appBar.preferredSize.height -
-                              mediaQuery.padding.top) *
-                          0.7,
-                      child: Chart(_recentTransactions))
-                  : txList // * reffering to the variable that holds the container
-          ]),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Platform.isIOS
-            ? Container()
-            : FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () => _addNewTransactionModalSheet(context),
-              ));
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            child: bodyOfApp,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: bodyOfApp,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _addNewTransactionModalSheet(context),
+                  ));
   }
 }
