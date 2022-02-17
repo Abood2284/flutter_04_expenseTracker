@@ -116,6 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // 🟦 TO avoid duplication of creation of MediaQuery object
+    final mediaQuery = MediaQuery.of(context);
     final appBar = AppBar(
       title: Text('Personel Expense'),
       actions: [
@@ -129,14 +131,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     final isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+        mediaQuery.orientation == Orientation.landscape;
 
 // 😆To avoid Duplication of code,
 // !🛑 This variable is refferd multiple times only in this file
     final txList = Container(
-        height: (MediaQuery.of(context).size.height -
+        height: (mediaQuery.size.height -
                 appBar.preferredSize.height -
-                MediaQuery.of(context).padding.top) *
+                mediaQuery.padding.top) *
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
@@ -163,9 +165,9 @@ class _MyHomePageState extends State<MyHomePage> {
             if (!isLandScape)
               // !🛑 Below code is not duplicated -> changes [ 0.7 -> 0.3 ]
               Container(
-                  height: (MediaQuery.of(context).size.height -
+                  height: (mediaQuery.size.height -
                           appBar.preferredSize.height -
-                          MediaQuery.of(context).padding.top) *
+                          mediaQuery.padding.top) *
                       0.3,
                   child: Chart(_recentTransactions)),
             if (!isLandScape)
@@ -181,9 +183,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       /// * MediaQuery takes appBAr height and the top padding height in calculation
                       /// * we dont want to split height with appBAr right? so substracting these 2 values
                       /// * gets you the full height of the user-device screen. which now can render you widgets
-                      height: (MediaQuery.of(context).size.height -
+                      height: (mediaQuery.size.height -
                               appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
+                              mediaQuery.padding.top) *
                           0.7,
                       child: Chart(_recentTransactions))
                   : txList // * reffering to the variable that holds the container
