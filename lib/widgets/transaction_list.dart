@@ -19,6 +19,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return transactions.isEmpty
+
         /// * LayoutBuilder takes a mandatorty argument called the builder:
         ///
         /// * which then also takes a function and return us the context, and the constraint(which we want here)
@@ -41,7 +42,7 @@ class TransactionList extends StatelessWidget {
             );
           })
         : ListView.builder(
-            // ! ListView default takes infinite space, Iniitalize height to parent carefully
+            // ! 🛑 ListView default takes infinite space, Iniitalize height to parent carefully
             // * Gives the context[we dont need] also give the index of the current element at pos
             itemBuilder: (_context, index) {
               return Card(
@@ -60,13 +61,19 @@ class TransactionList extends StatelessWidget {
                   ),
                   subtitle:
                       Text(DateFormat.yMMMd().format(transactions[index].date)),
-                  trailing: IconButton(
-                    onPressed: () {
-                      deleteTx(transactions[index].id);
-                    },
-                    icon: Icon(Icons.delete),
-                    color: Theme.of(context).errorColor,
-                  ),
+                  // * 🚀 I want to show button with icon with some more metadata if user devivce widht is greater than 400
+                  trailing: MediaQuery.of(context).size.width > 400
+                      ? FlatButton.icon(
+                          onPressed: () => deleteTx(transactions[index].id),
+                          icon: Icon(Icons.delete),
+                          textColor: Theme.of(context).errorColor,
+                          label: Text('Delete'),
+                        )
+                      : IconButton(
+                          onPressed: () => deleteTx(transactions[index].id),
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor,
+                        ),
                 ),
               );
             },
