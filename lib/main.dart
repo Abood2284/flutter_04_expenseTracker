@@ -119,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     // 🟦 TO avoid duplication of creation of MediaQuery object
     final mediaQuery = MediaQuery.of(context);
 
