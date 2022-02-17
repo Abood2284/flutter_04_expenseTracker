@@ -51,7 +51,7 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
- 
+
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
     /* Transaction(
@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
 // To avoid Duplication of code,
-// ! This variable is refferd multiple times only in this file
+// !🛑 This variable is refferd multiple times only in this file
     final txList = Container(
         height: (MediaQuery.of(context).size.height -
                 appBar.preferredSize.height -
@@ -161,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             // * If orientation is Portrait i want to see botht chart & txList
             if (!isLandScape)
-              // ! Below code is not duplicated -> changes [ 0.7 -> 0.3 ]
+              // !🛑 Below code is not duplicated -> changes [ 0.7 -> 0.3 ]
               Container(
                   height: (MediaQuery.of(context).size.height -
                           appBar.preferredSize.height -
