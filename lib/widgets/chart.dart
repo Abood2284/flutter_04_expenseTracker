@@ -53,7 +53,7 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
-    // ! Padding widget takes padding argument(required)
+    // !🛑 Padding widget takes padding argument(required)
       child: Padding(   
         padding: EdgeInsets.all(10),
         child: Row(
