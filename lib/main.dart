@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final isLandScape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-// To avoid Duplication of code,
+// 😆To avoid Duplication of code,
 // !🛑 This variable is refferd multiple times only in this file
     final txList = Container(
         height: (MediaQuery.of(context).size.height -
