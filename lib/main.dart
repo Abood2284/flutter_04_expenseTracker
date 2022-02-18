@@ -164,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
-// !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform also this variable calls our body class constructor located in another file my_Home_Body.dart
+  // !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform also this variable calls our body class constructor located in another file my_Home_Body.dart
     /// * SafeArea: It says that we respect the reserved size in IOS for notch and it then pushes our widget down so that everything is peoperly visible
     final myHomeBody = HomeBody(
       appBar: appBar,
