@@ -3,12 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 import './widgets/new_transaction.dart';
-import './widgets/chart.dart';
+import 'widgets/my_Home_Body.dart';
 
 void main() {
   /// * Locking the device orientation
@@ -22,40 +21,41 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Platform.isIOS ? CupertinoApp(
-      title: 'Personel Expense',
-      home: MyHomePage(),
-      debugShowCheckedModeBanner: false,
-      theme: CupertinoThemeData(
+    return Platform.isIOS
+        ? CupertinoApp(
+            title: 'Personel Expense',
+            home: MyHomePage(),
+            debugShowCheckedModeBanner: false,
+            theme: CupertinoThemeData(
               brightness: Brightness.dark,
               primaryColor: CupertinoColors.systemOrange,
             ),
-      
-    ) : MaterialApp(
-      title: 'Personel Expense',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-        accentColor: Colors.amber,
-        fontFamily: 'QuickSand',
+          )
+        : MaterialApp(
+            title: 'Personel Expense',
+            theme: ThemeData(
+              primarySwatch: Colors.purple,
+              accentColor: Colors.amber,
+              fontFamily: 'QuickSand',
 
-        /// * Created Own textTheme to be used for headlines {Theme.of(context).textTheme.headline6}
-        textTheme: ThemeData.light().textTheme.copyWith(
-              headline6: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-              button: TextStyle(color: Colors.white),
+              /// * Created Own textTheme to be used for headlines {Theme.of(context).textTheme.headline6}
+              textTheme: ThemeData.light().textTheme.copyWith(
+                    headline6: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    button: TextStyle(color: Colors.white),
+                  ),
+              appBarTheme: AppBarTheme(
+                  titleTextStyle: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)),
             ),
-        appBarTheme: AppBarTheme(
-            titleTextStyle: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20,
-                fontWeight: FontWeight.bold)),
-      ),
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
-    );
+            debugShowCheckedModeBanner: false,
+            home: MyHomePage(),
+          );
   }
 }
 
@@ -66,14 +66,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    /* Transaction(
-        id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
-    Transaction(
-        id: 't2',
-        title: 'Weekly Groceries',
-        amount: 16.53,
-        date: DateTime.now()),
-        */
+// User will add the transactions
   ];
 
   List<Transaction> get _recentTransactions {
@@ -128,7 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    
     // 🟦 TO avoid duplication of creation of MediaQuery object
     final mediaQuery = MediaQuery.of(context);
 
@@ -164,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final isLandScape = mediaQuery.orientation == Orientation.landscape;
 
 // 😆To avoid Duplication of code,
-// !🛑 This variable is refferd multiple times only in this file
+// !🛑 This variable is refferd multiple times in mulitple files
     final txList = Container(
         height: (mediaQuery.size.height -
                 appBar.preferredSize.height -
@@ -172,66 +164,26 @@ class _MyHomePageState extends State<MyHomePage> {
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
-// !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform
-/// * SafeArea: It says that we respect the reserved size in IOS for notch and it then pushes our widget down so that everything is peoperly visible
-    final bodyOfApp = SafeArea(
-      child: SingleChildScrollView(
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          // * Show the switch only if the orientation is landscape, refer to variable bool isLandscape
-          if (isLandScape)
-            Row(
-              children: [
-                Text('Show chart'),
-                Switch(
-                    value: _isChanged,
-                    onChanged: (val) {
-                      setState(() {
-                        _isChanged = val;
-                      });
-                    }),
-              ],
-            ),
-          // * If orientation is Portrait i want to see botht chart & txList
-          if (!isLandScape)
-            // !🛑 Below code is not duplicated -> changes [ 0.7 -> 0.3 ]
-            Container(
-                height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery.padding.top) *
-                    0.3,
-                child: Chart(_recentTransactions)),
-          if (!isLandScape)
-            txList, // * reffering to the variable that holds the container
-          // * If orientation landscape show the turnary expression
-          if (isLandScape)
-            _isChanged
-                ? Container(
-
-                    /// * 🟩 MediaQuery is a class that allows styling widgets according to the devivce user have
-                    ///
-                    /// * is used here to get the full height of the user's-device thought
-                    /// * MediaQuery takes appBAr height and the top padding height in calculation
-                    /// * we dont want to split height with appBAr right? so substracting these 2 values
-                    /// * gets you the full height of the user-device screen. which now can render you widgets
-                    height: (mediaQuery.size.height -
-                            appBar.preferredSize.height -
-                            mediaQuery.padding.top) *
-                        0.7,
-                    child: Chart(_recentTransactions))
-                : txList // * reffering to the variable that holds the container
-        ]),
-      ),
+  // !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform also this variable calls our body class constructor located in another file my_Home_Body.dart
+    /// * SafeArea: It says that we respect the reserved size in IOS for notch and it then pushes our widget down so that everything is peoperly visible
+    final myHomeBody = HomeBody(
+      appBar: appBar,
+      txList: txList,
+      isChanged: _isChanged,
+      mediaQuery: mediaQuery,
+      recentTransactions: _recentTransactions,
+      isLandScape: isLandScape,
     );
 
     return Platform.isIOS
         ? CupertinoPageScaffold(
             navigationBar: appBar as ObstructingPreferredSizeWidget,
-            child: bodyOfApp,
+            child:
+                myHomeBody, // * Reffering to the variable holding body constructor
           )
         : Scaffold(
             appBar: appBar,
-            body: bodyOfApp,
+            body: myHomeBody,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: Platform.isIOS
