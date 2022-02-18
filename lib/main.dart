@@ -22,7 +22,16 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return Platform.isIOS ? CupertinoApp(
+      title: 'Personel Expense',
+      home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
+      theme: CupertinoThemeData(
+              brightness: Brightness.dark,
+              primaryColor: CupertinoColors.systemOrange,
+            ),
+      
+    ) : MaterialApp(
       title: 'Personel Expense',
       theme: ThemeData(
         primarySwatch: Colors.purple,
