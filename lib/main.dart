@@ -3,13 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 import './widgets/new_transaction.dart';
 import 'widgets/my_Home_Body.dart';
-import './widgets/chart.dart';
 
 void main() {
   /// * Locking the device orientation
@@ -166,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
-// !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform
+// !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform also this variable calls our body class constructor located in another file my_Home_Body.dart
     /// * SafeArea: It says that we respect the reserved size in IOS for notch and it then pushes our widget down so that everything is peoperly visible
     final myHomeBody = HomeBody(
       appBar: appBar,
@@ -180,7 +178,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Platform.isIOS
         ? CupertinoPageScaffold(
             navigationBar: appBar as ObstructingPreferredSizeWidget,
-            child: myHomeBody, // * Reffering to the variable holding body constructor
+            child:
+                myHomeBody, // * Reffering to the variable holding body constructor
           )
         : Scaffold(
             appBar: appBar,
