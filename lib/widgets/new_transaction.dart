@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:io';
 
 /// * Reutrns Card Widget that have 2 TextField and 1 Flat button that displayes user userTransaction
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../widgets/adaptive_flat_button.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTxn;
@@ -69,7 +73,7 @@ class _NewTransactionState extends State<NewTransaction> {
         elevation: 5,
         child: Container(
           ///* Now our keyboard becomes a burden while entering the data
-          ///* You will know once you hover over viewInsets that it displays the parts of the UI 
+          ///* You will know once you hover over viewInsets that it displays the parts of the UI
           ///* that is covered by the SYSTEM i.e: Keyboard
           padding: EdgeInsets.only(
               top: 10,
@@ -111,14 +115,7 @@ class _NewTransactionState extends State<NewTransaction> {
                     SizedBox(
                       width: 30,
                     ),
-
-                    /// * That will take all the width available after giving our Text Widget the space it needs
-                    Expanded(
-                      child: TextButton(
-                        onPressed: _presentDatePickerOnScreen,
-                        child: Text('Choose Date'),
-                      ),
-                    )
+                    AdaptiveFlatButton(text: 'Choose Date', handler: _presentDatePickerOnScreen),
                   ],
                 ),
               ),
