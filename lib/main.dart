@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 import './widgets/new_transaction.dart';
-import './widgets/body_column.dart';
+import 'widgets/my_Home_Body.dart';
 import './widgets/chart.dart';
 
 void main() {
@@ -168,27 +168,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
 // !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform
     /// * SafeArea: It says that we respect the reserved size in IOS for notch and it then pushes our widget down so that everything is peoperly visible
-    final bodyOfApp = SafeArea(
-      child: SingleChildScrollView(
-        // * Whole body is shifted to another file to make code consice
-          child: BodyOfApp(
-        appBar: appBar,
-        isChanged: _isChanged,
-        isLandScape: isLandScape,
-        mediaQuery: mediaQuery,
-        recentTransactions: _recentTransactions,
-        txList: txList,
-      )),
+    final myHomeBody = HomeBody(
+      appBar: appBar,
+      txList: txList,
+      isChanged: _isChanged,
+      mediaQuery: mediaQuery,
+      recentTransactions: _recentTransactions,
+      isLandScape: isLandScape,
     );
 
     return Platform.isIOS
         ? CupertinoPageScaffold(
             navigationBar: appBar as ObstructingPreferredSizeWidget,
-            child: bodyOfApp,
+            child: myHomeBody, // * Reffering to the variable holding body constructor
           )
         : Scaffold(
             appBar: appBar,
-            body: bodyOfApp,
+            body: myHomeBody,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: Platform.isIOS
