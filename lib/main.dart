@@ -171,7 +171,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 mediaQuery.padding.top) *
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
-
 // !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform
 /// * SafeArea: It says that we respect the reserved size in IOS for notch and it then pushes our widget down so that everything is peoperly visible
     final bodyOfApp = SafeArea(
