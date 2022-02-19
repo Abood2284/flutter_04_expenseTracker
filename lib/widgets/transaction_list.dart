@@ -6,9 +6,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
+import './transaction_item.dart';
 
 class TransactionList extends StatelessWidget {
   List<Transaction> transactions;
@@ -45,37 +45,8 @@ class TransactionList extends StatelessWidget {
             // ! 🛑 ListView default takes infinite space, Iniitalize height to parent carefully
             // * Gives the context[we dont need] also give the index of the current element at pos
             itemBuilder: (_context, index) {
-              return Card(
-                margin: EdgeInsets.symmetric(vertical: 7, horizontal: 4),
-                elevation: 6,
-                child: ListTile(
-                  leading: CircleAvatar(
-                      child: Padding(
-                          padding: EdgeInsets.all(5),
-                          child: FittedBox(
-                              child: Text('\$${transactions[index].amount}'))),
-                      radius: 30),
-                  title: Text(
-                    transactions[index].title,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  subtitle:
-                      Text(DateFormat.yMMMd().format(transactions[index].date)),
-                  // * 🚀 I want to show button with icon with some more metadata if user devivce widht is greater than 400
-                  trailing: MediaQuery.of(context).size.width > 400
-                      ? FlatButton.icon(
-                          onPressed: () => deleteTx(transactions[index].id),
-                          icon: Icon(Icons.delete),
-                          textColor: Theme.of(context).errorColor,
-                          label: Text('Delete'),
-                        )
-                      : IconButton(
-                          onPressed: () => deleteTx(transactions[index].id),
-                          icon: Icon(Icons.delete),
-                          color: Theme.of(context).errorColor,
-                        ),
-                ),
-              );
+              // Here our transaction_item needs only 1 transaction so we are only passing one transaction at our index
+              return TransactionItem(transaction: transactions[index], deleteTx: deleteTx);
             },
             itemCount: transactions.length,
           );
