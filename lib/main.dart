@@ -168,39 +168,45 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
+  PreferredSizeWidget _buildCupertinoAppBar() {
+    return CupertinoNavigationBar(
+      middle: Text('Personel Expense'),
+      trailing: Row(
+        // * Will only take the size(width) as much his children needs
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CupertinoButton(
+              padding: EdgeInsets.all(0.0),
+              onPressed: () => _addNewTransactionModalSheet(context),
+              child: Icon(CupertinoIcons.add)),
+        ],
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildMaterialAppBar() {
+    return AppBar(
+      title: Text('Personel Expense'),
+      actions: [
+        IconButton(
+            onPressed: () => _addNewTransactionModalSheet(context),
+            icon: Icon(
+              Icons.add,
+              color: Colors.amberAccent,
+            ))
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // 🟦 TO avoid duplication of creation of MediaQuery object
     final mediaQuery = MediaQuery.of(context);
 
     /// * By default dart couldnt parse that appBar has a size method called PrefferedSize so we need to explicitly set AppBar
     /// * to say that this will have PrefferedSize method also for android we used as PrefferedSizeWidget at end of our appBar
     /// * & For IOS we use ObstructingPreferredSizeWidget when using appBAt for IOS,
-    final PreferredSizeWidget appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: Text('Personel Expense'),
-            trailing: Row(
-              // * Will only take the size(width) as much his children needs
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CupertinoButton(
-                    padding: EdgeInsets.all(0.0),
-                    onPressed: () => _addNewTransactionModalSheet(context),
-                    child: Icon(CupertinoIcons.add)),
-              ],
-            ),
-          )
-        : AppBar(
-            title: Text('Personel Expense'),
-            actions: [
-              IconButton(
-                  onPressed: () => _addNewTransactionModalSheet(context),
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.amberAccent,
-                  ))
-            ],
-          ) as PreferredSizeWidget;
+    final PreferredSizeWidget appBar =
+        Platform.isIOS ? _buildCupertinoAppBar() : _buildMaterialAppBar();
 
     final isLandScape = mediaQuery.orientation == Orientation.landscape;
 
