@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 import './widgets/new_transaction.dart';
-import 'widgets/my_Home_Body.dart';
+import 'widgets/chart.dart';
 
 void main() {
   /// * Locking the device orientation
@@ -119,6 +119,55 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+// * If Orientation == landscape, Show this method return
+  List<Widget> _buildLandscapeContent(
+      MediaQueryData mediaQuery, PreferredSizeWidget appBar, Widget txList) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Show chart'),
+          Switch(
+              value: _isChanged,
+              onChanged: (val) {
+                setState(() {
+                  _isChanged = val;
+                });
+              }),
+        ],
+      ),
+      _isChanged
+          ? Container(
+
+              /// * 🟩 MediaQuery is a class that allows styling widgets according to the devivce user have
+              ///
+              /// * is used here to get the full height of the user's-device thought
+              /// * MediaQuery takes appBAr height and the top padding height in calculation
+              /// * we dont want to split height with appBAr right? so substracting these 2 values
+              /// * gets you the full height of the user-device screen. which now can render you widgets
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              child: Chart(_recentTransactions))
+          : txList
+    ];
+  }
+
+// * If Orientation == Portrait, Show this method return
+  List<Widget> _buildPortraitContent(
+      MediaQueryData mediaQuery, PreferredSizeWidget appBar, Widget txList) {
+    return [
+      Container(
+          height: (mediaQuery.size.height -
+                  appBar.preferredSize.height -
+                  mediaQuery.padding.top) *
+              0.3,
+          child: Chart(_recentTransactions)),
+      txList
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     // 🟦 TO avoid duplication of creation of MediaQuery object
@@ -155,8 +204,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final isLandScape = mediaQuery.orientation == Orientation.landscape;
 
-// 😆To avoid Duplication of code,
-// !🛑 This variable is refferd multiple times in mulitple files
     final txList = Container(
         height: (mediaQuery.size.height -
                 appBar.preferredSize.height -
@@ -164,15 +211,20 @@ class _MyHomePageState extends State<MyHomePage> {
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
-  // !🟥 This is main body of our app stored in a variable so that we can render different widgets based on device paltform also this variable calls our body class constructor located in another file my_Home_Body.dart
-    /// * SafeArea: It says that we respect the reserved size in IOS for notch and it then pushes our widget down so that everything is peoperly visible
-    final myHomeBody = HomeBody(
-      appBar: appBar,
-      txList: txList,
-      isChanged: _isChanged,
-      mediaQuery: mediaQuery,
-      recentTransactions: _recentTransactions,
-      isLandScape: isLandScape,
+    // !🟥 This is main body of our app stored in a variable to avoid duplication
+    /// * SafeArea: It says that we respect the reserved size in IOS for notch and it then pushes our widget down so that everything is properly visible
+    final myHomeBody = SafeArea(
+      child: SingleChildScrollView(
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          // * If Orientation == landscape, Show this method return
+          if (isLandScape)
+            ..._buildLandscapeContent(mediaQuery, appBar, txList),
+          // * If Orientation == Portrait, Show this method return
+          if (!isLandScape)
+            ..._buildPortraitContent(mediaQuery, appBar, txList),
+        ]),
+      ),
     );
 
     return Platform.isIOS
