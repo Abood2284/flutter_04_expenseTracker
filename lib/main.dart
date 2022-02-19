@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.purple,
               accentColor: Colors.amber,
               fontFamily: 'QuickSand',
-
               /// * Created Own textTheme to be used for headlines {Theme.of(context).textTheme.headline6}
               textTheme: ThemeData.light().textTheme.copyWith(
                     headline6: TextStyle(
