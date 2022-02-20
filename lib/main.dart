@@ -64,7 +64,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   final List<Transaction> _userTransactions = [
 // User will add the transactions
   ];
@@ -82,6 +82,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// * Sets the state of the switch
   bool _isChanged = false;
+
+//* Setting observer when the state is created
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+// * Setting the Listener dis is automatically called by Observer we created
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+  }
+
+// * Removing the created Observer to free ram
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance!.removeObserver(this);
+  }
 
   /// * Add new objects in TransactionList + Updates the State
   void _addTx(String txTitle, double txAmount, DateTime selectedDate) {
@@ -113,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _deleteTransaction(String id) {
     setState(() {
-      /// * removeWhere iterates over every element in List
+      /// * Iterates over every element in List
       /// * and removes the element which matches the test condition
       _userTransactions.removeWhere((tx) => tx.id == id);
     });
@@ -168,35 +188,37 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-  PreferredSizeWidget _buildCupertinoAppBar() {
-    return CupertinoNavigationBar(
-      middle: Text('Personel Expense'),
-      trailing: Row(
-        // * Will only take the size(width) as much his children needs
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CupertinoButton(
-              padding: EdgeInsets.all(0.0),
-              onPressed: () => _addNewTransactionModalSheet(context),
-              child: Icon(CupertinoIcons.add)),
-        ],
-      ),
-    );
+  PreferredSizeWidget _buildAppBar() {
+    return Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text('Personel Expense'),
+            trailing: Row(
+              // * Will only take the size(width) as much his children needs
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CupertinoButton(
+                    padding: EdgeInsets.all(0.0),
+                    onPressed: () => _addNewTransactionModalSheet(context),
+                    child: Icon(CupertinoIcons.add)),
+              ],
+            ),
+          )
+        : AppBar(
+            title: Text('Personel Expense'),
+            actions: [
+              IconButton(
+                  onPressed: () => _addNewTransactionModalSheet(context),
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.amberAccent,
+                  ))
+            ],
+          ) as PreferredSizeWidget;
   }
 
-  PreferredSizeWidget _buildMaterialAppBar() {
-    return AppBar(
-      title: Text('Personel Expense'),
-      actions: [
-        IconButton(
-            onPressed: () => _addNewTransactionModalSheet(context),
-            icon: Icon(
-              Icons.add,
-              color: Colors.amberAccent,
-            ))
-      ],
-    );
-  }
+  // PreferredSizeWidget _buildMaterialAppBar() {
+  //   return
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -205,18 +227,14 @@ class _MyHomePageState extends State<MyHomePage> {
     /// * By default dart couldnt parse that appBar has a size method called PrefferedSize so we need to explicitly set AppBar
     /// * to say that this will have PrefferedSize method also for android we used as PrefferedSizeWidget at end of our appBar
     /// * & For IOS we use ObstructingPreferredSizeWidget when using appBAt for IOS,
-    final PreferredSizeWidget appBar =
-        Platform.isIOS ? _buildCupertinoAppBar() : _buildMaterialAppBar();
-
+    final PreferredSizeWidget appBar = _buildAppBar();
     final isLandScape = mediaQuery.orientation == Orientation.landscape;
-
     final txList = Container(
         height: (mediaQuery.size.height -
                 appBar.preferredSize.height -
                 mediaQuery.padding.top) *
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
-
     // !🟥 This is main body of our app stored in a variable to avoid duplication
     /// * SafeArea: It says that we respect the reserved size in IOS for notch and it then pushes our widget down so that everything is properly visible
     final myHomeBody = SafeArea(
@@ -236,8 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Platform.isIOS
         ? CupertinoPageScaffold(
             navigationBar: appBar as ObstructingPreferredSizeWidget,
-            child:
-                myHomeBody, // * Reffering to the variable holding body constructor
+            child: myHomeBody,
           )
         : Scaffold(
             appBar: appBar,
