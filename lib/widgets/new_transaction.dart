@@ -1,10 +1,7 @@
 // ignore_for_file: prefer_const_constructors
-import 'dart:io';
-
 /// * Reutrns Card Widget that have 2 TextField and 1 Flat button that displayes user userTransaction
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../widgets/adaptive_flat_button.dart';
 
